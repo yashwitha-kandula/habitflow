@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HabitFlow – Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --peach: #fcd5b4;
+    --rose: #f9a8d4;
+    --mint: #bbf7d0;
+    --sky: #bae6fd;
+    --lavender: #ddd6fe;
+    --bg: #fdf6f0;
+    --card: #fffaf7;
+    --text: #2d1b0e;
+    --muted: #9a7d6a;
+    --accent: #e87c52;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .bg-blobs {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  }
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.35;
+    animation: float 8s ease-in-out infinite alternate;
+  }
+  .blob1 { width:380px;height:380px;background:var(--rose);top:-80px;left:-100px;animation-delay:0s }
+  .blob2 { width:300px;height:300px;background:var(--peach);bottom:-60px;right:-80px;animation-delay:2s }
+  .blob3 { width:200px;height:200px;background:var(--mint);top:40%;left:60%;animation-delay:4s }
+  @keyframes float { from{transform:translateY(0) scale(1)} to{transform:translateY(-30px) scale(1.05)} }
+
+  .container {
+    position: relative; z-index: 1;
+    background: var(--card);
+    border-radius: 28px;
+    padding: 52px 48px;
+    width: 420px;
+    box-shadow: 0 20px 60px rgba(180,100,50,0.12), 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid rgba(255,255,255,0.8);
+  }
+  .logo {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .logo-icon {
+    width: 56px; height: 56px;
+    background: linear-gradient(135deg, var(--rose), var(--accent));
+    border-radius: 16px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    margin-bottom: 12px;
+    box-shadow: 0 6px 20px rgba(232,124,82,0.3);
+  }
+  .logo h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+  .logo p { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+
+  .tabs {
+    display: flex; gap: 4px;
+    background: #f0e8e0;
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 28px;
+  }
+  .tab {
+    flex: 1; padding: 10px;
+    border: none; background: transparent;
+    border-radius: 9px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab.active {
+    background: white;
+    color: var(--text);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .form-group { margin-bottom: 18px; }
+  label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  input[type=text], input[type=password] {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid #e8ddd5;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    background: #fffaf7;
+    color: var(--text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(232,124,82,0.12);
+  }
+  .btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.97rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #e87c52, #d64f2a);
+    color: white;
+    box-shadow: 0 4px 14px rgba(214,79,42,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(214,79,42,0.4); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .error {
+    background: #fff0ee;
+    color: #c0392b;
+    border: 1px solid #fbb;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    margin-top: 12px;
+    display: none;
+  }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .demo-hint {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+<div class="bg-blobs">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+</div>
+<div class="container">
+  <div class="logo">
+    <div class="logo-icon">🌱</div>
+    <h1>HabitFlow</h1>
+    <p>Build habits that stick, one day at a time</p>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('login')">Sign In</button>
+    <button class="tab" onclick="switchTab('register')">Create Account</button>
+  </div>
+
+  <div id="loginPanel" class="panel active">
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="loginUser" placeholder="Enter your username" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="Enter your password" autocomplete="current-password">
+    </div>
+    <button class="btn btn-primary" onclick="doLogin()">Sign In →</button>
+    <div class="error" id="loginError"></div>
+  </div>
+
+  <div id="registerPanel" class="panel">
+    <div class="form-group">
+      <label>Choose a Username</label>
+      <input type="text" id="regUser" placeholder="e.g. sarah_builds" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="regPass" placeholder="At least 6 characters" autocomplete="new-password">
+    </div>
+    <button class="btn btn-primary" onclick="doRegister()">Create Account →</button>
+    <div class="error" id="regError"></div>
+  </div>
+
+  <p class="demo-hint">💡 Multi-user supported — each account has private habits & data</p>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (tab==='login'&&i===0)||(tab==='register'&&i===1)));
+  document.getElementById('loginPanel').classList.toggle('active', tab==='login');
+  document.getElementById('registerPanel').classList.toggle('active', tab==='register');
+}
+
+async function doLogin() {
+  const username = document.getElementById('loginUser').value.trim();
+  const password = document.getElementById('loginPass').value;
+  const err = document.getElementById('loginError');
+  err.style.display = 'none';
+  const res = await fetch('/api/login', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})});
+  const data = await res.json();
+  if (res.ok) window.location.href = '/dashboard';
+  else { err.textContent = data.error; err.style.display = 'block'; }
+}
+
+async function doRegister() {
+  const username = document.getElementById('regUser').value.trim();
+  const password = document.getElementById('regPass').value;
+  const err = document.getElementById('regError');
+  err.style.display = 'none';
+  if (password.length < 6) { err.textContent = 'Password must be at least 6 characters'; err.style.display = 'block'; return; }
+  const res = await fetch('/api/register', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})});
+  const data = await res.json();
+  if (res.ok) window.location.href = '/dashboard';
+  else { err.textContent = data.error; err.style.display = 'block'; }
+}
+
+document.addEventListener('keydown', e => { if (e.key==='Enter') { if(document.getElementById('loginPanel').classList.contains('active')) doLogin(); else doRegister(); } });
+</script>
+</body>
+</html>
